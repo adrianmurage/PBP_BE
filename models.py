@@ -1,4 +1,5 @@
 import pymongo
+from passlib.hash import pbkdf2_sha256 as sha256
 
 
 class Mongo:
@@ -31,6 +32,14 @@ class Users(Mongo):
         self.user_type = user_type
         self.db = self.mongo[self.user_type]
 
+    @staticmethod
+    def generate_hash(password):
+        return sha256.hash(password)
+
+    @staticmethod
+    def verify_hash(password, hashed_password):
+        return sha256.verify(password, hashed_password)
+
     def register_user(self, user_details):
         """
         adds new users to the db
@@ -46,12 +55,7 @@ class Users(Mongo):
         :param username: string
         :return:
         """
-        find_session = self.db.find_one(
+        user = self.db.find_one(
             {"username": username}
         )
-
-        if find_session:
-            return True
-
-        if not find_session:
-            return False
+        return user
