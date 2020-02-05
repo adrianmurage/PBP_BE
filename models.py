@@ -13,6 +13,7 @@ class Mongo:
         :param database: string
                         the name of the database to be used
         """
+        # TODO move config variables to env
         mongo_uri = "mongodb+srv://{user}:{pswd}@pbp-dkuv8.azure.mongodb.net/test?retryWrites=true&w=majority".format(
             user="adrianmurage",
             pswd="y6q85ymUp8PgGhZ2"
