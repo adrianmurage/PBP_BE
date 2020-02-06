@@ -13,7 +13,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 
 from PBP_BE import resources
 
-api.add_resource(resources.RegularUserRegistration, '/api/registration')
+api.add_resource(resources.RegularUserRegistration, '/api/register')
 api.add_resource(resources.RegularUserLogin, '/api/login')
 api.add_resource(resources.RegularUserLogoutAccess, '/api/logout/access')
 api.add_resource(resources.RegularUserLogoutRefresh, '/api/logout/refresh')
