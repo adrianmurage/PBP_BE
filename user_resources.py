@@ -3,7 +3,7 @@ from flask_jwt_extended import (
     create_refresh_token,
     jwt_required,
     jwt_refresh_token_required,
-    get_jwt_identity
+    get_jwt_identity,
 )
 from flask_restful import Resource, reqparse
 
@@ -30,13 +30,7 @@ class RegularUserRegistration(Resource):
         }
         try:
             regular_user.register_user(new_user)
-            access_token = create_access_token(identity=data['username'])
-            refresh_token = create_refresh_token(identity=data['username'])
-            return {
-                       'message': 'User {} was successfully created'.format(data["username"]),
-                       'access_token': access_token,
-                       'refresh_token': refresh_token
-                   }, 200
+            return {'message': 'User {} was successfully created'.format(data["username"])}, 200
         except:
             return {'message': 'Something went wrong'}, 500
 
@@ -45,15 +39,21 @@ class RegularUserLogin(Resource):
     def post(self):
         data = regular_user_parser.parse_args()
         current_user = regular_user.find_user_by_username(data["username"])
-        print(current_user)
+
+        # if current_user['_id'] == ObjectId(str(current_user['_id'])):
+        #     print(True)
 
         # if user does not exist
         if not current_user:
             return {'message': 'User {} doesn\'t exist'.format(data['username'])}
 
         if regular_user.verify_hash(data['password'], current_user['password']):
-            access_token = create_access_token(identity=data['username'])
-            refresh_token = create_refresh_token(identity=data['username'])
+            user = {
+                'username': current_user['username'],
+                '_id': str(current_user['_id'])
+            }
+            access_token = create_access_token(user)
+            refresh_token = create_refresh_token(user)
             return {
                        'message': 'Logged in as {}'.format(current_user['username']),
                        'access_token': access_token,
@@ -73,11 +73,11 @@ class RegularUserLogoutRefresh(Resource):
         return {'message': 'regular user logout'}
 
 
-class RegularUserTokenRefresh(Resource):
+class UserTokenRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
-        current_user = get_jwt_identity()
-        access_token = create_access_token(identity=current_user)
+        user = get_jwt_identity()
+        access_token = create_access_token(identity=user)
         return {'access_token': access_token}, 200
 
 

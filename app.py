@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
-import resources
+import user_resources
 
 app = Flask(__name__)
 api = Api(app)
@@ -19,12 +19,18 @@ def index():
     return jsonify({'message': 'Hello, World!'})
 
 
-api.add_resource(resources.RegularUserRegistration, '/api/register')
-api.add_resource(resources.RegularUserLogin, '/api/login')
-api.add_resource(resources.RegularUserLogoutAccess, '/api/logout/access')
-api.add_resource(resources.RegularUserLogoutRefresh, '/api/logout/refresh')
-api.add_resource(resources.RegularUserTokenRefresh, '/api/token/refresh')
-api.add_resource(resources.SecretResource, '/api/secret')
+api.add_resource(user_resources.RegularUserRegistration, '/api/register')
+api.add_resource(user_resources.RegularUserLogin, '/api/login')
+api.add_resource(user_resources.RegularUserLogoutAccess, '/api/logout/access')
+api.add_resource(user_resources.RegularUserLogoutRefresh, '/api/logout/refresh')
+api.add_resource(user_resources.UserTokenRefresh, '/api/token/refresh')
+api.add_resource(user_resources.SecretResource, '/api/secret')
+
+
+@jwt.user_identity_loader
+def user_identity_lookup(user):
+    return user
+
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
