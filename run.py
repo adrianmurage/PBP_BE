@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
-from PBP_BE import resources
+import resources
 
 app = Flask(__name__)
 api = Api(app)

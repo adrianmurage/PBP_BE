@@ -7,7 +7,7 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource, reqparse
 
-from PBP_BE.models import Users
+from models import Users
 
 regular_user = Users("REGULAR")
 regular_user_parser = reqparse.RequestParser()
