@@ -19,3 +19,5 @@ api.add_resource(resources.RegularUserLogoutAccess, '/api/logout/access')
 api.add_resource(resources.RegularUserLogoutRefresh, '/api/logout/refresh')
 api.add_resource(resources.RegularUserTokenRefresh, '/api/token/refresh')
 api.add_resource(resources.SecretResource, '/api/secret')
+
+app.run(host='0.0.0.0/0', port=80)
