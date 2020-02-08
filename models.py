@@ -39,7 +39,7 @@ class Users(Mongo):
     def verify_hash(password, hashed_password):
         return sha256.verify(password, hashed_password)
 
-    def register_user(self, user_details):
+    def save(self, user_details):
         """
         adds new users to the db
         :param user_details: dictionary
@@ -69,11 +69,32 @@ class Marketplace(Mongo):
         super(Marketplace, self).__init__('MARKETPLACE')
         self.db = self.mongo[collection]
 
-    def save_shop(self, shop_details):
-        self.db.insert_one(shop_details)
+    def save(self, payload):
+        self.db.insert_one(payload)
 
     def find_shop_by_vendor_id(self, vendor_id):
         shop_details = self.db.find_one(
             {'vendor_id': vendor_id}
         )
         return shop_details
+
+    def find_shop_by_shop_name(self, shop_name):
+        shop_details = self.db.find_one(
+            {'shop_name': shop_name}
+        )
+        return shop_details
+
+    def find_item_by_name(self, item_name):
+        item_details = self.db.find_one(
+            {'item_name': item_name}
+        )
+        return item_details
+
+    def increment_item_quantity(self, item_name, vendor_id, item_quantity: int):
+        self.db.update(
+            {
+                'item_name': item_name,
+                'vendor_id': vendor_id
+            },
+            {'$inc': {'item_quantity': item_quantity}}
+        )

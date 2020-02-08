@@ -24,13 +24,13 @@ class RegularUserRegistration(Resource):
         if current_user:
             return {'message': 'username {} already exists'.format(data['username'])}
 
-        new_user = {
+        new_regular_user = {
             'username': data['username'],
             'password': user_instance.generate_hash(data['password']),
             'is_vendor': False
         }
         try:
-            user_instance.register_user(new_user)
+            user_instance.save(new_regular_user)
             return {'message': 'User {} was successfully created'.format(data['username'])}, 200
         except:
             return {'message': 'Something went wrong'}, 500
@@ -73,13 +73,13 @@ class VendorRegistration(Resource):
         if current_user:
             return {'message': 'username {} already exists'.format(data['username'])}
 
-        new_user = {
+        new_vendor = {
             'username': data['username'],
             'password': user_instance.generate_hash(data['password']),
             'is_vendor': True
         }
         try:
-            user_instance.register_user(new_user)
+            user_instance.save(new_vendor)
             return {'message': 'Vendor {} was successfully created'.format(data['username'])}, 200
         except:
             return {'message': 'Something went wrong'}, 500
