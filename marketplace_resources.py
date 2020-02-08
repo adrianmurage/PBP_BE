@@ -44,9 +44,7 @@ class Shop(Resource):
                 print('except here')
                 return {'message': 'Something went wrong'}, 500
         else:
-            shop_details1 = shop_instance.find_shop_by_shop_name(
-                shop_details0['shop_name']
-            )
+            shop_details1 = shop_instance.find_shop_by_shop_name(data['shop_name'])
             if shop_details1 or shop_details0:
                 return {'message': 'shop {} already exists'.format(data['shop_name'])}
 
