@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from bson.objectid import ObjectId
 from flask_jwt_extended import (
     jwt_required,
@@ -27,28 +25,30 @@ class Shop(Resource):
         vendor_id = get_jwt_identity()['_id']
         shop_details0 = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
         # if does not exist
-        if shop_details0 is None:
-            pass
+        if not shop_details0:
+            new_shop = {
+                'shop_name': data['shop_name'],
+                'shop_location': {
+                    'lat': float(data['shop_lat']),
+                    'lng': float(data['shop_lng'])
+                },
+                'vendor_id': ObjectId(vendor_id)
+            }
+            print(new_shop)
+            try:
+                print('try here')
+                shop_instance.save(new_shop)
+                print('here')
+                return {'message': 'Shop {} was successfully created'.format(data['shop_name'])}, 200
+            except:
+                print('except here')
+                return {'message': 'Something went wrong'}, 500
         else:
             shop_details1 = shop_instance.find_shop_by_shop_name(
                 shop_details0['shop_name']
             )
             if shop_details1 or shop_details0:
                 return {'message': 'shop {} already exists'.format(data['shop_name'])}
-
-        new_shop = {
-            'shop_name': data['shop_name'],
-            'shop_location': {
-                'lat': Decimal(data['shop_lat']),
-                'lng': Decimal(data['shop_lng'])
-            },
-            'vendor_id': ObjectId(vendor_id)
-        }
-        try:
-            shop_instance.save(new_shop)
-            return {'message': 'Shop {} was successfully created'.format(data['shop_name'])}, 200
-        except:
-            return {'message': 'Something went wrong'}, 500
 
 
 class Item(Resource):
