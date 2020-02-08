@@ -8,16 +8,16 @@ class Mongo:
     this class is overridden by sub-classes below
     """
 
-    def __init__(self, database="USERS"):
+    def __init__(self, database='USERS'):
         """
 
         :param database: string
                         the name of the database to be used
         """
         # TODO move config variables to env
-        mongo_uri = "mongodb+srv://{user}:{pswd}@pbp-dkuv8.azure.mongodb.net/test?retryWrites=true&w=majority".format(
-            user="adrianmurage",
-            pswd="y6q85ymUp8PgGhZ2"
+        mongo_uri = 'mongodb+srv://{user}:{pswd}@pbp-dkuv8.azure.mongodb.net/test?retryWrites=true&w=majority'.format(
+            user='adrianmurage',
+            pswd='y6q85ymUp8PgGhZ2'
         )
         self.mongo = pymongo.MongoClient(mongo_uri)[database]
 
@@ -27,10 +27,9 @@ class Users(Mongo):
     class for user related db interactions
     """
 
-    def __init__(self, user_type):
-        super(Users, self).__init__("USERS")
-        self.user_type = user_type
-        self.db = self.mongo[self.user_type]
+    def __init__(self):
+        super(Users, self).__init__('USERS')
+        self.db = self.mongo['ALL_USERS']
 
     @staticmethod
     def generate_hash(password):
@@ -56,6 +55,6 @@ class Users(Mongo):
         :return:
         """
         user = self.db.find_one(
-            {"username": username}
+            {'username': username}
         )
         return user

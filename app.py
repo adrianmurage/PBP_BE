@@ -7,11 +7,10 @@ import user_resources
 
 app = Flask(__name__)
 api = Api(app)
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r'/api/*': {'origins': '*'}})
 jwt = JWTManager(app)
 
 app.config['JWT_SECRET_KEY'] = 'JrR&A7z3#jdxpASvAE18J$%m0tb9TK@P'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 
 
 @app.route('/')
@@ -21,9 +20,11 @@ def index():
 
 api.add_resource(user_resources.RegularUserRegistration, '/api/register')
 api.add_resource(user_resources.RegularUserLogin, '/api/login')
-api.add_resource(user_resources.RegularUserLogoutAccess, '/api/logout/access')
-api.add_resource(user_resources.RegularUserLogoutRefresh, '/api/logout/refresh')
-api.add_resource(user_resources.UserTokenRefresh, '/api/token/refresh')
+api.add_resource(user_resources.VendorRegistration, '/api/vendor/register')
+api.add_resource(user_resources.VendorLogin, '/api/vendor/login')
+api.add_resource(user_resources.LogoutAccess, '/api/logout/access')
+api.add_resource(user_resources.LogoutRefresh, '/api/logout/refresh')
+api.add_resource(user_resources.TokenRefresh, '/api/token/refresh')
 api.add_resource(user_resources.SecretResource, '/api/secret')
 
 

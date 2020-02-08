@@ -9,36 +9,37 @@ from flask_restful import Resource, reqparse
 
 from models import Users
 
-regular_user = Users("REGULAR")
-regular_user_parser = reqparse.RequestParser()
-regular_user_parser.add_argument('username', help='This field cannot be blank', required=True)
-regular_user_parser.add_argument('password', help='This field cannot be blank', required=True)
+user_instance = Users()
+user_parser = reqparse.RequestParser()
+user_parser.add_argument('username', help='This field cannot be blank', required=True)
+user_parser.add_argument('password', help='This field cannot be blank', required=True)
 
 
 class RegularUserRegistration(Resource):
     def post(self):
-        data = regular_user_parser.parse_args()
+        data = user_parser.parse_args()
 
         # if user exists
-        current_user = regular_user.find_user_by_username(data["username"])
+        current_user = user_instance.find_user_by_username(data['username'])
         if current_user:
-            return {'message': 'User {} already exists'.format(data['username'])}
+            return {'message': 'username {} already exists'.format(data['username'])}
 
         new_user = {
-            "username": data["username"],
-            "password": regular_user.generate_hash(data["password"])
+            'username': data['username'],
+            'password': user_instance.generate_hash(data['password']),
+            'is_vendor': False
         }
         try:
-            regular_user.register_user(new_user)
-            return {'message': 'User {} was successfully created'.format(data["username"])}, 200
+            user_instance.register_user(new_user)
+            return {'message': 'User {} was successfully created'.format(data['username'])}, 200
         except:
             return {'message': 'Something went wrong'}, 500
 
 
 class RegularUserLogin(Resource):
     def post(self):
-        data = regular_user_parser.parse_args()
-        current_user = regular_user.find_user_by_username(data["username"])
+        data = user_parser.parse_args()
+        current_user = user_instance.find_user_by_username(data['username'])
 
         # if current_user['_id'] == ObjectId(str(current_user['_id'])):
         #     print(True)
@@ -47,7 +48,7 @@ class RegularUserLogin(Resource):
         if not current_user:
             return {'message': 'User {} doesn\'t exist'.format(data['username'])}
 
-        if regular_user.verify_hash(data['password'], current_user['password']):
+        if user_instance.verify_hash(data['password'], current_user['password']):
             user = {
                 'username': current_user['username'],
                 '_id': str(current_user['_id'])
@@ -63,17 +64,63 @@ class RegularUserLogin(Resource):
             return {'message': 'Wrong credentials'}, 401
 
 
-class RegularUserLogoutAccess(Resource):
+class VendorRegistration(Resource):
+    def post(self):
+        data = user_parser.parse_args()
+
+        # if user exists
+        current_user = user_instance.find_user_by_username(data['username'])
+        if current_user:
+            return {'message': 'username {} already exists'.format(data['username'])}
+
+        new_user = {
+            'username': data['username'],
+            'password': user_instance.generate_hash(data['password']),
+            'is_vendor': True
+        }
+        try:
+            user_instance.register_user(new_user)
+            return {'message': 'Vendor {} was successfully created'.format(data['username'])}, 200
+        except:
+            return {'message': 'Something went wrong'}, 500
+
+
+class VendorLogin(Resource):
+    def post(self):
+        data = user_parser.parse_args()
+        current_user = user_instance.find_user_by_username(data['username'])
+        print(current_user)
+        # if vendor does not exist
+        if not current_user:
+            return {'message': 'Vendor {} doesn\'t exist'.format(data['username'])}
+
+        if user_instance.verify_hash(data['password'], current_user['password']):
+            user = {
+                'username': current_user['username'],
+                '_id': str(current_user['_id'])
+            }
+            access_token = create_access_token(user)
+            refresh_token = create_refresh_token(user)
+            return {
+                       'message': 'Logged in as {}'.format(current_user['username']),
+                       'access_token': access_token,
+                       'refresh_token': refresh_token
+                   }, 200
+        else:
+            return {'message': 'Wrong credentials'}, 401
+
+
+class LogoutAccess(Resource):
     def post(self):
         return {'message': 'regular user logout'}
 
 
-class RegularUserLogoutRefresh(Resource):
+class LogoutRefresh(Resource):
     def post(self):
         return {'message': 'regular user logout'}
 
 
-class UserTokenRefresh(Resource):
+class TokenRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
         user = get_jwt_identity()
@@ -84,4 +131,4 @@ class UserTokenRefresh(Resource):
 class SecretResource(Resource):
     @jwt_required
     def get(self):
-        return {'value': True}
+        return get_jwt_identity()
