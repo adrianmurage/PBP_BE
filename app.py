@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
+import marketplace_resources
 import user_resources
 
 app = Flask(__name__)
@@ -26,6 +27,7 @@ api.add_resource(user_resources.LogoutAccess, '/api/logout/access')
 api.add_resource(user_resources.LogoutRefresh, '/api/logout/refresh')
 api.add_resource(user_resources.TokenRefresh, '/api/token/refresh')
 api.add_resource(user_resources.SecretResource, '/api/secret')
+api.add_resource(marketplace_resources.Shop, '/api/vendor/shop')
 
 
 @jwt.user_identity_loader

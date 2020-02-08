@@ -58,3 +58,22 @@ class Users(Mongo):
             {'username': username}
         )
         return user
+
+
+class Marketplace(Mongo):
+    """
+    Class for market place collection
+    """
+
+    def __init__(self, collection):
+        super(Marketplace, self).__init__('MARKETPLACE')
+        self.db = self.mongo[collection]
+
+    def save_shop(self, shop_details):
+        self.db.insert_one(shop_details)
+
+    def find_shop_by_vendor_id(self, vendor_id):
+        shop_details = self.db.find_one(
+            {'vendor_id': vendor_id}
+        )
+        return shop_details

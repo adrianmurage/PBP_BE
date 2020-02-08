@@ -89,7 +89,7 @@ class VendorLogin(Resource):
     def post(self):
         data = user_parser.parse_args()
         current_user = user_instance.find_user_by_username(data['username'])
-        print(current_user)
+
         # if vendor does not exist
         if not current_user:
             return {'message': 'Vendor {} doesn\'t exist'.format(data['username'])}
