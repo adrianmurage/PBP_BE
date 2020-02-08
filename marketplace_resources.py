@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from bson.objectid import ObjectId
 from flask_jwt_extended import (
     jwt_required,
@@ -37,8 +39,8 @@ class Shop(Resource):
         new_shop = {
             'shop_name': data['shop_name'],
             'shop_location': {
-                'lat': int(data['shop_lat']),
-                'lng': int(data['shop_lng'])
+                'lat': Decimal(data['shop_lat']),
+                'lng': Decimal(data['shop_lng'])
             },
             'vendor_id': ObjectId(vendor_id)
         }
