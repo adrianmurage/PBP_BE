@@ -24,6 +24,9 @@ class Shop(Resource):
         data = shop_parser.parse_args()
         vendor_id = get_jwt_identity()['_id']
         shop_details0 = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
+        shop_details1 = shop_instance.find_shop_by_shop_name(data['shop_name'])
+        if shop_details1 or shop_details0:
+            return {'message': 'shop {} already exists'.format(data['shop_name'])}
         # if does not exist
         if not shop_details0:
             new_shop = {
@@ -36,24 +39,16 @@ class Shop(Resource):
             }
             print(new_shop)
             try:
-                print('try here')
                 shop_instance.save(new_shop)
-                print('here')
                 return {'message': 'Shop {} was successfully created'.format(data['shop_name'])}, 200
             except:
-                print('except here')
                 return {'message': 'Something went wrong'}, 500
-        else:
-            shop_details1 = shop_instance.find_shop_by_shop_name(data['shop_name'])
-            if shop_details1 or shop_details0:
-                return {'message': 'shop {} already exists'.format(data['shop_name'])}
 
 
 class Item(Resource):
     @jwt_required
     def post(self):
         data = item_parser.parse_args()
-        print(data)
         vendor_id = get_jwt_identity()['_id']
         shop_details = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
         item_details = item_instance.find_item_by_name(data['item_name'])
