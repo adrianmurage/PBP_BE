@@ -24,14 +24,15 @@ class Shop(Resource):
         data = shop_parser.parse_args()
         vendor_id = get_jwt_identity()['_id']
         shop_details0 = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
-        # if shop exists
-        if shop_details0:
-            return {'message': 'shop {} already exists'.format(data['shop_name'])}
-        shop_details1 = shop_instance.find_shop_by_shop_name(
-            shop_details0['shop_name']
-        )
-        if shop_details1:
-            return {'message': 'shop {} already exists'.format(data['shop_name'])}
+        # if does not exist
+        if shop_details0 is None:
+            pass
+        else:
+            shop_details1 = shop_instance.find_shop_by_shop_name(
+                shop_details0['shop_name']
+            )
+            if shop_details1 or shop_details0:
+                return {'message': 'shop {} already exists'.format(data['shop_name'])}
 
         new_shop = {
             'shop_name': data['shop_name'],
