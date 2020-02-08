@@ -1,3 +1,5 @@
+import datetime
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -12,6 +14,7 @@ cors = CORS(app, resources={r'/api/*': {'origins': '*'}})
 jwt = JWTManager(app)
 
 app.config['JWT_SECRET_KEY'] = 'JrR&A7z3#jdxpASvAE18J$%m0tb9TK@P'
+app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(days=10)
 
 
 @app.route('/')
