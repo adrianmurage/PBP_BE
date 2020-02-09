@@ -26,7 +26,7 @@ class Shop(Resource):
         shop_details0 = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
         shop_details1 = shop_instance.find_shop_by_shop_name(data['shop_name'])
         if shop_details1 or shop_details0:
-            return {'message': 'shop {} already exists'.format(data['shop_name'])}
+            return {'msg': 'shop {} already exists'.format(data['shop_name'])}
         # if does not exist
         if not shop_details0:
             new_shop = {
@@ -40,12 +40,24 @@ class Shop(Resource):
             print(new_shop)
             try:
                 shop_instance.save(new_shop)
-                return {'message': 'Shop {} was successfully created'.format(data['shop_name'])}, 200
+                return {'msg': 'Shop {} was successfully created'.format(data['shop_name'])}, 200
             except:
-                return {'message': 'Something went wrong'}, 500
+                return {'msg': 'Something went wrong'}, 500
 
 
 class Item(Resource):
+    def get(self):
+        try:
+            items = []
+            for item in item_instance.find_items():
+                item['_id'] = str(item['_id'])
+                item['vendor_id'] = str(item['vendor_id'])
+                item['shop_id'] = str(item['shop_id'])
+                items.append(item)
+            return items, 200
+        except:
+            return {'msg': 'Something went wrong'}, 500
+
     @jwt_required
     def post(self):
         data = item_parser.parse_args()
@@ -54,7 +66,7 @@ class Item(Resource):
         item_details = item_instance.find_item_by_name(data['item_name'])
         # if shop does not exist
         if not shop_details:
-            return {'message': 'The current vendor\'s shop does not exists'}, 404
+            return {'msg': 'The current vendor\'s shop does not exists'}, 404
         # if item exists increment quantity
         if item_details:
             item_instance.increment_item_quantity(
@@ -62,7 +74,7 @@ class Item(Resource):
                 ObjectId(vendor_id),
                 int(data['item_quantity'])
             )
-            return {'message': 'Incremented item {0} by {1}'.format(
+            return {'msg': 'Incremented item {0} by {1}'.format(
                 data['item_name'],
                 data['item_quantity']
             )}
@@ -75,6 +87,6 @@ class Item(Resource):
         }
         try:
             item_instance.save(new_item)
-            return {'message': 'item {} was successfully added'.format(data['item_name'])}
+            return {'msg': 'item {} was successfully added'.format(data['item_name'])}
         except:
-            return {'message': 'Something went wrong'}, 500
+            return {'msg': 'Something went wrong'}, 500

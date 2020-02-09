@@ -22,7 +22,7 @@ class RegularUserRegistration(Resource):
         # if user exists
         current_user = user_instance.find_user_by_username(data['username'])
         if current_user:
-            return {'message': 'username {} already exists'.format(data['username'])}
+            return {'msg': 'username {} already exists'.format(data['username'])}
 
         new_regular_user = {
             'username': data['username'],
@@ -31,9 +31,9 @@ class RegularUserRegistration(Resource):
         }
         try:
             user_instance.save(new_regular_user)
-            return {'message': 'User {} was successfully created'.format(data['username'])}, 200
+            return {'msg': 'User {} was successfully created'.format(data['username'])}, 200
         except:
-            return {'message': 'Something went wrong'}, 500
+            return {'msg': 'Something went wrong'}, 500
 
 
 class RegularUserLogin(Resource):
@@ -46,7 +46,7 @@ class RegularUserLogin(Resource):
 
         # if user does not exist
         if not current_user:
-            return {'message': 'User {} doesn\'t exist'.format(data['username'])}
+            return {'msg': 'User {} doesn\'t exist'.format(data['username'])}
 
         if user_instance.verify_hash(data['password'], current_user['password']):
             user = {
@@ -56,12 +56,12 @@ class RegularUserLogin(Resource):
             access_token = create_access_token(user)
             refresh_token = create_refresh_token(user)
             return {
-                       'message': 'Logged in as {}'.format(current_user['username']),
+                       'msg': 'Logged in as {}'.format(current_user['username']),
                        'access_token': access_token,
                        'refresh_token': refresh_token
                    }, 200
         else:
-            return {'message': 'Wrong credentials'}, 401
+            return {'msg': 'Wrong credentials'}, 401
 
 
 class VendorRegistration(Resource):
@@ -71,7 +71,7 @@ class VendorRegistration(Resource):
         # if user exists
         current_user = user_instance.find_user_by_username(data['username'])
         if current_user:
-            return {'message': 'username {} already exists'.format(data['username'])}
+            return {'msg': 'username {} already exists'.format(data['username'])}
 
         new_vendor = {
             'username': data['username'],
@@ -80,9 +80,9 @@ class VendorRegistration(Resource):
         }
         try:
             user_instance.save(new_vendor)
-            return {'message': 'Vendor {} was successfully created'.format(data['username'])}, 200
+            return {'msg': 'Vendor {} was successfully created'.format(data['username'])}, 200
         except:
-            return {'message': 'Something went wrong'}, 500
+            return {'msg': 'Something went wrong'}, 500
 
 
 class VendorLogin(Resource):
@@ -92,7 +92,7 @@ class VendorLogin(Resource):
 
         # if vendor does not exist
         if not current_user:
-            return {'message': 'Vendor {} doesn\'t exist'.format(data['username'])}
+            return {'msg': 'Vendor {} doesn\'t exist'.format(data['username'])}
 
         if user_instance.verify_hash(data['password'], current_user['password']):
             user = {
@@ -102,22 +102,22 @@ class VendorLogin(Resource):
             access_token = create_access_token(user)
             refresh_token = create_refresh_token(user)
             return {
-                       'message': 'Logged in as {}'.format(current_user['username']),
+                       'msg': 'Logged in as {}'.format(current_user['username']),
                        'access_token': access_token,
                        'refresh_token': refresh_token
                    }, 200
         else:
-            return {'message': 'Wrong credentials'}, 401
+            return {'msg': 'Wrong credentials'}, 401
 
 
 class LogoutAccess(Resource):
     def post(self):
-        return {'message': 'regular user logout'}
+        return {'msg': 'regular user logout'}
 
 
 class LogoutRefresh(Resource):
     def post(self):
-        return {'message': 'regular user logout'}
+        return {'msg': 'regular user logout'}
 
 
 class TokenRefresh(Resource):

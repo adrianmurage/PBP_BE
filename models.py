@@ -98,3 +98,7 @@ class Marketplace(Mongo):
             },
             {'$inc': {'item_quantity': item_quantity}}
         )
+
+    def find_items(self):
+        items = self.db.find({})
+        return items

@@ -15,11 +15,13 @@ jwt = JWTManager(app)
 
 app.config['JWT_SECRET_KEY'] = 'JrR&A7z3#jdxpASvAE18J$%m0tb9TK@P'
 app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(days=10)
+app.config['PROPAGATE_EXCEPTIONS'] = True
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=10)
 
 
 @app.route('/')
 def index():
-    return jsonify({'message': 'Hello, World!'})
+    return jsonify({'msg': 'Hello, World!'})
 
 
 api.add_resource(user_resources.RegularUserRegistration, '/api/register')
