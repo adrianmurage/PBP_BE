@@ -20,20 +20,21 @@ item_parser.add_argument('item_name', help="This field cannot be blank", require
 item_parser.add_argument('item_quantity', help="this field cannot be blank", required=True)
 order_instance = Marketplace("ORDERS")
 order_parser = reqparse.RequestParser()
-order_parser.add_argument('regular_user_id', help='This field cannot be blank', required=True)
 order_parser.add_argument('item_id', help='This field cannot be blank', required=True)
 order_parser.add_argument('shop_id', help='This field cannot be blank', required=True)
 
 
 class Order(Resource):
+    @jwt_required
     def post(self):
         data = order_parser.parse_args()
-        order = order_instance.find_order(ObjectId(data['shop_id']), ObjectId(data['regular_user_id']))
+        regular_user_id = get_jwt_identity()['regular_user_id']
+        order = order_instance.find_order(ObjectId(data['shop_id']), ObjectId(regular_user_id))
 
         if not order:
             new_order = {
                 'shop_id': ObjectId(data['shop_id']),
-                'regular_user_id': ObjectId(data['regular_user_id']),
+                'regular_user_id': ObjectId(regular_user_id),
                 'created_at': datetime.datetime.now(),
                 'items': [data['item_id'], ]
             }
@@ -45,7 +46,7 @@ class Order(Resource):
         if order:
             updated_order = {
                 'shop_id': ObjectId(data['shop_id']),
-                'regular_user_id': ObjectId(data['regular_user_id']),
+                'regular_user_id': ObjectId(regular_user_id),
                 'updated_at': datetime.datetime.now(),
                 'item': data['item_id']
             }
