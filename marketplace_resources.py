@@ -1,3 +1,5 @@
+import datetime
+
 from bson.objectid import ObjectId
 from flask_jwt_extended import (
     jwt_required,
@@ -15,14 +17,50 @@ shop_parser.add_argument('shop_lng', help='This field cannot be blank', required
 item_instance = Marketplace("ITEMS")
 item_parser = reqparse.RequestParser()
 item_parser.add_argument('item_name', help="This field cannot be blank", required=True)
-item_parser.add_argument('item_quantity', help="this field cannot be empty", required=True)
+item_parser.add_argument('item_quantity', help="this field cannot be blank", required=True)
+order_instance = Marketplace("ORDERS")
+order_parser = reqparse.RequestParser()
+order_parser.add_argument('regular_user_id', help='This field cannot be blank', required=True)
+order_parser.add_argument('item_id', help='This field cannot be blank', required=True)
+order_parser.add_argument('shop_id', help='This field cannot be blank', required=True)
+
+
+class Order(Resource):
+    def post(self):
+        data = order_parser.parse_args()
+        order = order_instance.find_order(ObjectId(data['shop_id']), ObjectId(data['regular_user_id']))
+
+        if not order:
+            new_order = {
+                'shop_id': ObjectId(data['shop_id']),
+                'regular_user_id': ObjectId(data['regular_user_id']),
+                'created_at': datetime.datetime.now(),
+                'items': [data['item_id'], ]
+            }
+            try:
+                order_instance.save(new_order)
+                return {'msg': 'new order created'}
+            except:
+                return {'msg': 'Something went wrong'}, 500
+        if order:
+            updated_order = {
+                'shop_id': ObjectId(data['shop_id']),
+                'regular_user_id': ObjectId(data['regular_user_id']),
+                'updated_at': datetime.datetime.now(),
+                'item': data['item_id']
+            }
+            try:
+                order_instance.update_order(updated_order)
+                return {'msg': 'your order was updated'}
+            except:
+                return {'msg': 'Something went wrong'}, 500
 
 
 class Shop(Resource):
     @jwt_required
     def post(self):
         data = shop_parser.parse_args()
-        vendor_id = get_jwt_identity()['_id']
+        vendor_id = get_jwt_identity()['vendor_id']
         shop_details0 = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
         shop_details1 = shop_instance.find_shop_by_shop_name(data['shop_name'])
         if shop_details1 or shop_details0:
@@ -61,7 +99,7 @@ class Item(Resource):
     @jwt_required
     def post(self):
         data = item_parser.parse_args()
-        vendor_id = get_jwt_identity()['_id']
+        vendor_id = get_jwt_identity()['vendor_id']
         shop_details = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
         item_details = item_instance.find_item_by_name(data['item_name'])
         # if shop does not exist

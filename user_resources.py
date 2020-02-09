@@ -41,9 +41,6 @@ class RegularUserLogin(Resource):
         data = user_parser.parse_args()
         current_user = user_instance.find_user_by_username(data['username'])
 
-        # if current_user['_id'] == ObjectId(str(current_user['_id'])):
-        #     print(True)
-
         # if user does not exist
         if not current_user:
             return {'msg': 'User {} doesn\'t exist'.format(data['username'])}
@@ -51,7 +48,7 @@ class RegularUserLogin(Resource):
         if user_instance.verify_hash(data['password'], current_user['password']):
             user = {
                 'username': current_user['username'],
-                '_id': str(current_user['_id'])
+                'regular_user_id': str(current_user['_id'])
             }
             access_token = create_access_token(user)
             refresh_token = create_refresh_token(user)
@@ -97,7 +94,7 @@ class VendorLogin(Resource):
         if user_instance.verify_hash(data['password'], current_user['password']):
             user = {
                 'username': current_user['username'],
-                '_id': str(current_user['_id'])
+                'vendor_id': str(current_user['_id'])
             }
             access_token = create_access_token(user)
             refresh_token = create_refresh_token(user)

@@ -102,3 +102,23 @@ class Marketplace(Mongo):
     def find_items(self):
         items = self.db.find({})
         return items
+
+    def find_order(self, shop_id, user_id):
+        order = self.db.find_one({
+            'shop_id': shop_id,
+            'regular_user_id': user_id
+        })
+
+        return order
+
+    def update_order(self, payload):
+        self.db.update_one(
+            {
+                'shop_id': payload['shop_id'],
+                'regular_user_id': payload['regular_user_id']
+            },
+            {
+                '$push': {'items': payload['item']},
+                '$set': {'updated_at': payload['updated_at']}
+            }
+        )

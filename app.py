@@ -33,7 +33,8 @@ api.add_resource(user_resources.LogoutRefresh, '/api/logout/refresh')
 api.add_resource(user_resources.TokenRefresh, '/api/token/refresh')
 api.add_resource(user_resources.SecretResource, '/api/secret')
 api.add_resource(marketplace_resources.Shop, '/api/vendor/shop')
-api.add_resource(marketplace_resources.Item, '/api/vendor/item')
+api.add_resource(marketplace_resources.Item, '/api/item')
+api.add_resource(marketplace_resources.Order, '/api/order')
 
 
 @jwt.user_identity_loader
