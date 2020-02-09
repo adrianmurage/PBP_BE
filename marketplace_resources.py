@@ -26,6 +26,31 @@ order_parser.add_argument('shop_id', help='This field cannot be blank', required
 
 class Order(Resource):
     @jwt_required
+    def get(self):
+        regular_user_id = get_jwt_identity()['regular_user_id']
+        try:
+            orders = order_instance.find_users_orders(ObjectId(regular_user_id))
+            json_ready_orders = []
+            for order in orders:
+                shop_details = shop_instance.find_shop_by_shop_id(order['shop_id'])
+                items = []
+                for item in order['items']:
+                    item_details = item_instance.find_item_by_id(ObjectId(item))
+                    items.append(item_details['item_name'])
+
+                order_item = {
+                    'order_id': str(order['_id']),
+                    'shop_id': str(order['shop_id']),
+                    'shop_name': shop_details['shop_name'],
+                    'items': items
+                }
+                json_ready_orders.append(order_item)
+            return json_ready_orders
+
+        except:
+            return {'msg': 'Something went wrong'}, 500
+
+    @jwt_required
     def post(self):
         data = order_parser.parse_args()
         regular_user_id = get_jwt_identity()['regular_user_id']

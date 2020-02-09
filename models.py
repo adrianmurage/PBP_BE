@@ -72,6 +72,12 @@ class Marketplace(Mongo):
     def save(self, payload):
         self.db.insert_one(payload)
 
+    def find_shop_by_shop_id(self, shop_id):
+        shop_details = self.db.find_one({
+            '_id': shop_id
+        })
+        return shop_details
+
     def find_shop_by_vendor_id(self, vendor_id):
         shop_details = self.db.find_one(
             {'vendor_id': vendor_id}
@@ -88,6 +94,12 @@ class Marketplace(Mongo):
         item_details = self.db.find_one(
             {'item_name': item_name}
         )
+        return item_details
+
+    def find_item_by_id(self, item_id):
+        item_details = self.db.find_one({
+            '_id': item_id
+        })
         return item_details
 
     def increment_item_quantity(self, item_name, vendor_id, item_quantity: int):
@@ -122,3 +134,9 @@ class Marketplace(Mongo):
                 '$set': {'updated_at': payload['updated_at']}
             }
         )
+
+    def find_users_orders(self, regular_user_id):
+        orders = self.db.find({
+            'regular_user_id': regular_user_id
+        })
+        return orders
