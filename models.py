@@ -59,6 +59,12 @@ class Users(Mongo):
         )
         return user
 
+    def find_user_by_id(self, user_id):
+        user = self.db.find_one(
+            {'_id': user_id}
+        )
+        return user
+
 
 class Marketplace(Mongo):
     """

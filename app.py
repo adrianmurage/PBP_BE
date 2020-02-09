@@ -28,13 +28,12 @@ api.add_resource(user_resources.RegularUserRegistration, '/api/register')
 api.add_resource(user_resources.RegularUserLogin, '/api/login')
 api.add_resource(user_resources.VendorRegistration, '/api/vendor/register')
 api.add_resource(user_resources.VendorLogin, '/api/vendor/login')
-api.add_resource(user_resources.LogoutAccess, '/api/logout/access')
-api.add_resource(user_resources.LogoutRefresh, '/api/logout/refresh')
+api.add_resource(user_resources.Profile, '/api/user/profile')
 api.add_resource(user_resources.TokenRefresh, '/api/token/refresh')
-api.add_resource(user_resources.SecretResource, '/api/secret')
 api.add_resource(marketplace_resources.Shop, '/api/vendor/shop')
 api.add_resource(marketplace_resources.Item, '/api/item')
 api.add_resource(marketplace_resources.Order, '/api/order')
+api.add_resource(marketplace_resources.OrderMap, '/api/order/map')
 
 
 @jwt.user_identity_loader

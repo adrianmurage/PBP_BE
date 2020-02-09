@@ -24,6 +24,21 @@ order_parser.add_argument('item_id', help='This field cannot be blank', required
 order_parser.add_argument('shop_id', help='This field cannot be blank', required=True)
 
 
+class OrderMap(Resource):
+    @jwt_required
+    def get(self):
+        regular_user_id = get_jwt_identity()['regular_user_id']
+        try:
+            orders = order_instance.find_users_orders(ObjectId(regular_user_id))
+            locations = []
+            for order in orders:
+                shop_details = shop_instance.find_shop_by_shop_id(order['shop_id'])
+                locations.append(shop_details['shop_location'])
+            return {'locations': locations}
+        except:
+            return {'msg': 'Something went wrong'}, 500
+
+
 class Order(Resource):
     @jwt_required
     def get(self):

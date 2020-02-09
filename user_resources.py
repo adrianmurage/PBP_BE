@@ -1,3 +1,4 @@
+from bson.objectid import ObjectId
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -13,6 +14,20 @@ user_instance = Users()
 user_parser = reqparse.RequestParser()
 user_parser.add_argument('username', help='This field cannot be blank', required=True)
 user_parser.add_argument('password', help='This field cannot be blank', required=True)
+
+
+class Profile(Resource):
+    @jwt_required
+    def get(self):
+        regular_user_id = get_jwt_identity()['regular_user_id']
+        try:
+            user = user_instance.find_user_by_id(ObjectId(regular_user_id))
+            user_details = {
+                'username': user['username']
+            }
+            return user_details
+        except:
+            return {'msg': 'Something went wrong'}, 500
 
 
 class RegularUserRegistration(Resource):
@@ -107,25 +122,9 @@ class VendorLogin(Resource):
             return {'msg': 'Wrong credentials'}, 401
 
 
-class LogoutAccess(Resource):
-    def post(self):
-        return {'msg': 'regular user logout'}
-
-
-class LogoutRefresh(Resource):
-    def post(self):
-        return {'msg': 'regular user logout'}
-
-
 class TokenRefresh(Resource):
     @jwt_refresh_token_required
     def post(self):
         user = get_jwt_identity()
         access_token = create_access_token(identity=user)
         return {'access_token': access_token}, 200
-
-
-class SecretResource(Resource):
-    @jwt_required
-    def get(self):
-        return get_jwt_identity()
