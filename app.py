@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
+import configs
 import marketplace_resources
 import user_resources
 
@@ -13,7 +14,7 @@ api = Api(app)
 cors = CORS(app, resources={r'/api/*': {'origins': '*'}})
 jwt = JWTManager(app)
 
-app.config['JWT_SECRET_KEY'] = 'JrR&A7z3#jdxpASvAE18J$%m0tb9TK@P'
+app.config['JWT_SECRET_KEY'] = configs.JWT_SECRET_KEY
 app.config['JWT_EXPIRATION_DELTA'] = datetime.timedelta(days=10)
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=10)

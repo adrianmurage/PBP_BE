@@ -1,6 +1,8 @@
 import pymongo
 from passlib.hash import pbkdf2_sha256 as sha256
 
+import configs
+
 
 class Mongo:
     """
@@ -16,8 +18,8 @@ class Mongo:
         """
         # TODO move config variables to env
         mongo_uri = 'mongodb+srv://{user}:{pswd}@pbp-dkuv8.azure.mongodb.net/test?retryWrites=true&w=majority'.format(
-            user='adrianmurage',
-            pswd='y6q85ymUp8PgGhZ2'
+            user=configs.MONGO_USER,
+            pswd=configs.MONGO_PSWD
         )
         self.mongo = pymongo.MongoClient(mongo_uri)[database]
 
