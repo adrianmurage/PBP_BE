@@ -1,3 +1,5 @@
+import datetime
+
 from bson.objectid import ObjectId
 from flask_jwt_extended import (
     create_access_token,
@@ -42,7 +44,8 @@ class RegularUserRegistration(Resource):
         new_regular_user = {
             'username': data['username'],
             'password': user_instance.generate_hash(data['password']),
-            'is_vendor': False
+            'is_vendor': False,
+            'created_at': datetime.datetime.now()
         }
         try:
             user_instance.save(new_regular_user)
@@ -88,7 +91,8 @@ class VendorRegistration(Resource):
         new_vendor = {
             'username': data['username'],
             'password': user_instance.generate_hash(data['password']),
-            'is_vendor': True
+            'is_vendor': True,
+            'created_at': datetime.datetime.now()
         }
         try:
             user_instance.save(new_vendor)
