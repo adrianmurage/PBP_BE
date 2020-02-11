@@ -34,7 +34,7 @@ class OrderMap(Resource):
             for order in orders:
                 shop_details = shop_instance.find_shop_by_shop_id(order['shop_id'])
                 locations.append(shop_details['shop_location'])
-            return {'locations': locations}
+            return {'locations': locations}, 200
         except:
             return {'msg': 'Something went wrong'}, 500
 
@@ -60,7 +60,7 @@ class Order(Resource):
                     'items': items
                 }
                 json_ready_orders.append(order_item)
-            return json_ready_orders
+            return json_ready_orders, 200
 
         except:
             return {'msg': 'Something went wrong'}, 500
@@ -80,7 +80,7 @@ class Order(Resource):
             }
             try:
                 order_instance.save(new_order)
-                return {'msg': 'new order created'}
+                return {'msg': 'new order created'}, 200
             except:
                 return {'msg': 'Something went wrong'}, 500
         if order:
@@ -92,7 +92,7 @@ class Order(Resource):
             }
             try:
                 order_instance.update_order(updated_order)
-                return {'msg': 'your order was updated'}
+                return {'msg': 'your order was updated'}, 201
             except:
                 return {'msg': 'Something went wrong'}, 500
 
@@ -105,7 +105,7 @@ class Shop(Resource):
         shop_details0 = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
         shop_details1 = shop_instance.find_shop_by_shop_name(data['shop_name'])
         if shop_details1 or shop_details0:
-            return {'msg': 'shop {} already exists'.format(data['shop_name'])}
+            return {'msg': 'shop {} already exists'.format(data['shop_name'])}, 401
         # if does not exist
         if not shop_details0:
             new_shop = {
@@ -156,7 +156,7 @@ class Item(Resource):
             return {'msg': 'Incremented item {0} by {1}'.format(
                 data['item_name'],
                 data['item_quantity']
-            )}
+            )}, 201
 
         new_item = {
             'item_name': data['item_name'],
@@ -166,6 +166,6 @@ class Item(Resource):
         }
         try:
             item_instance.save(new_item)
-            return {'msg': 'item {} was successfully added'.format(data['item_name'])}
+            return {'msg': 'item {} was successfully added'.format(data['item_name'])}, 201
         except:
             return {'msg': 'Something went wrong'}, 500

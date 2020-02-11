@@ -37,7 +37,7 @@ class RegularUserRegistration(Resource):
         # if user exists
         current_user = user_instance.find_user_by_username(data['username'])
         if current_user:
-            return {'msg': 'username {} already exists'.format(data['username'])}
+            return {'msg': 'username {} already exists'.format(data['username'])}, 401
 
         new_regular_user = {
             'username': data['username'],
@@ -58,7 +58,7 @@ class RegularUserLogin(Resource):
 
         # if user does not exist
         if not current_user:
-            return {'msg': 'User {} doesn\'t exist'.format(data['username'])}
+            return {'msg': 'User {} doesn\'t exist'.format(data['username'])}, 401
 
         if user_instance.verify_hash(data['password'], current_user['password']):
             user = {
@@ -83,7 +83,7 @@ class VendorRegistration(Resource):
         # if user exists
         current_user = user_instance.find_user_by_username(data['username'])
         if current_user:
-            return {'msg': 'username {} already exists'.format(data['username'])}
+            return {'msg': 'username {} already exists'.format(data['username'])}, 401
 
         new_vendor = {
             'username': data['username'],
@@ -104,7 +104,7 @@ class VendorLogin(Resource):
 
         # if vendor does not exist
         if not current_user:
-            return {'msg': 'Vendor {} doesn\'t exist'.format(data['username'])}
+            return {'msg': 'Vendor {} doesn\'t exist'.format(data['username'])}, 401
 
         if user_instance.verify_hash(data['password'], current_user['password']):
             user = {
