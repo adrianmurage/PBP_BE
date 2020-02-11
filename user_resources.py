@@ -36,6 +36,9 @@ class RegularUserRegistration(Resource):
     def post(self):
         data = user_parser.parse_args()
 
+        # if username is ''
+        if data['username'] == '' or None:
+            return {'msg': 'username cannot be blank'}, 401
         # if user exists
         current_user = user_instance.find_user_by_username(data['username'])
         if current_user:
