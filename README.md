@@ -63,7 +63,7 @@ ie.
 ```
 https://github.com/MainaMurage/PBP_BE.git
 ```
-2. Using [virtualenv]() set up a virtual environment
+2. Using virtualenv set up a virtual environment
 ```
 virtualenv <environment name>
 ```
