@@ -28,12 +28,12 @@ The app has two types of users:
 
 | JWT protected | Resource        | method | endpoint  | end goal |
 | ------------- | --------------- | ------ | --------- | -------- |
-| [ ]           | ru registration | POST   | /register | create a ru |
-| [ ]           | ru login        | POST   | /login    | login a ru, generate & return access token and refresh token |
-| [x]           | ru profile      | GET    | /user/profile | cr ru profile information |
-| [ ]           | ve registration | POST   | /vendor/register | create a ve |
-| [ ]           | ve login        | POST   | /vendor/login | login a ve |
-| [x]           | ve shop         | POST   | /vendor/shop | create a vendor's shop |
+| No            | ru registration | POST   | /register | create a ru |
+| No            | ru login        | POST   | /login    | login a ru, generate & return access token and refresh token |
+| Yes           | ru profile      | GET    | /user/profile | cr ru profile information |
+| No            | ve registration | POST   | /vendor/register | create a ve |
+| No            | ve login        | POST   | /vendor/login | login a ve |
+| Yes           | ve shop         | POST   | /vendor/shop | create a vendor's shop |
 
 #### Marketplace Resources
 These comprise of everything that doesn't fall under [User Resources](#user-resources)
@@ -45,8 +45,8 @@ ie.
 
 | JWT protected | Resource        | method | endpoint  | end goal |
 | ------------- | --------------- | ------ | --------- | -------- |
-| [ ]           | item            | GET    | /item     | get all items |
-| [x]           | item            | POST   | /item     | ve create a new item |
-| [x]           | orders          | GET    | /order    | return all orders made by a re |
-| [x]           | orders          | POST   | /order    | ru create a new order or add item to an existing order |
-| [x]           | order map       | GET    | /order/map | return coordinates(lat, lng) for all ve a ru has ordered from |
+| No            | item            | GET    | /item     | get all items |
+| Yes           | item            | POST   | /item     | ve create a new item |
+| Yes           | orders          | GET    | /order    | return all orders made by a re |
+| Yes           | orders          | POST   | /order    | ru create a new order or add item to an existing order |
+| Yes           | order map       | GET    | /order/map | return coordinates(lat, lng) for all ve a ru has ordered from |
