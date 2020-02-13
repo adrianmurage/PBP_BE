@@ -10,26 +10,25 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource, reqparse
 
-from models import Users
+from models import Users, Marketplace
 
 user_instance = Users()
 user_parser = reqparse.RequestParser()
 user_parser.add_argument('username', help='This field cannot be blank', required=True)
 user_parser.add_argument('password', help='This field cannot be blank', required=True)
+shop_instance = Marketplace("SHOPS")
+shop_parser = reqparse.RequestParser()
+shop_parser.add_argument('shop_name', help='This field cannot be blank', required=True)
+shop_parser.add_argument('shop_lat', help='This field cannot be blank', required=True)
+shop_parser.add_argument('shop_lng', help='This field cannot be blank', required=True)
 
 
-class Profile(Resource):
-    @jwt_required
-    def get(self):
-        regular_user_id = get_jwt_identity()['regular_user_id']
-        try:
-            user = user_instance.find_user_by_id(ObjectId(regular_user_id))
-            user_details = {
-                'username': user['username']
-            }
-            return user_details
-        except:
-            return {'msg': 'Something went wrong'}, 500
+class TokenRefresh(Resource):
+    @jwt_refresh_token_required
+    def post(self):
+        user = get_jwt_identity()
+        access_token = create_access_token(identity=user)
+        return {'access_token': access_token}, 200
 
 
 class RegularUserRegistration(Resource):
@@ -82,6 +81,20 @@ class RegularUserLogin(Resource):
             return {'msg': 'Wrong credentials'}, 401
 
 
+class Profile(Resource):
+    @jwt_required
+    def get(self):
+        regular_user_id = get_jwt_identity()['regular_user_id']
+        try:
+            user = user_instance.find_user_by_id(ObjectId(regular_user_id))
+            user_details = {
+                'username': user['username']
+            }
+            return user_details
+        except:
+            return {'msg': 'Something went wrong'}, 500
+
+
 class VendorRegistration(Resource):
     def post(self):
         data = user_parser.parse_args()
@@ -129,9 +142,28 @@ class VendorLogin(Resource):
             return {'msg': 'Wrong credentials'}, 401
 
 
-class TokenRefresh(Resource):
-    @jwt_refresh_token_required
+class Shop(Resource):
+    @jwt_required
     def post(self):
-        user = get_jwt_identity()
-        access_token = create_access_token(identity=user)
-        return {'access_token': access_token}, 200
+        data = shop_parser.parse_args()
+        vendor_id = get_jwt_identity()['vendor_id']
+        shop_details0 = shop_instance.find_shop_by_vendor_id(ObjectId(vendor_id))
+        shop_details1 = shop_instance.find_shop_by_shop_name(data['shop_name'])
+        if shop_details1 or shop_details0:
+            return {'msg': 'shop {} already exists'.format(data['shop_name'])}, 401
+        # if does not exist
+        if not shop_details0:
+            new_shop = {
+                'shop_name': data['shop_name'],
+                'shop_location': {
+                    'lat': float(data['shop_lat']),
+                    'lng': float(data['shop_lng'])
+                },
+                'vendor_id': ObjectId(vendor_id)
+            }
+            print(new_shop)
+            try:
+                shop_instance.save(new_shop)
+                return {'msg': 'Shop {} was successfully created'.format(data['shop_name'])}, 200
+            except:
+                return {'msg': 'Something went wrong'}, 500
