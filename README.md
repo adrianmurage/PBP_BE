@@ -37,4 +37,4 @@ ve
 | [x]           | ve shop         | POST   | /vendor/shop | create a vendor's shop |
 
 #### Marketplace Resources
-These comprise of everything that doesn't fall under User Resources
+These comprise of everything that doesn't fall under [User Resources](#User Resources)
