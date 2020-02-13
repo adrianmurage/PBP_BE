@@ -14,6 +14,7 @@ The JWTs expire after 15 minutes and can be refreshed via:
 | Resource        | method | endpoint  |
 | --------------- | ------ | --------- |
 | JWT refresh     | POST   | /token/refresh |
+
 ###### resource tables key:
 ru
  : regular user
@@ -50,3 +51,40 @@ ie.
 | Yes           | orders          | GET    | /order    | return all orders made by a re |
 | Yes           | orders          | POST   | /order    | ru create a new order or add item to an existing order |
 | Yes           | order map       | GET    | /order/map | return coordinates(lat, lng) for all ve a ru has ordered from |
+
+###Perquisites:
+- python3
+- python-pip
+- virtualenv
+- flask
+
+### Local Setup
+1. Clone the repository
+```
+https://github.com/MainaMurage/PBP_BE.git
+```
+2. Using [virtualenv]() set up a virtual environment
+```
+virtualenv <environment name>
+```
+3. Activate the virtual environment
+```
+source <path to env name>/bin/activate (in bash)
+```
+4. Install the requirements
+```
+pip install -r requirements.txt
+```
+5. Run the dev server
+```
+python3 app.py 
+```
+
+### Contribution
+
+ If you want to contribute to this project:
+- Fork it!
+- Create your feature branch: git checkout -b my-new-feature
+- Commit your changes: git commit -am 'Add some feature'
+- Push to the branch: git push origin my-new-feature
+- Submit a pull request
