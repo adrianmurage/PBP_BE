@@ -15,7 +15,7 @@ The JWTs expire after 15 minutes and can be refreshed via:
 | --------------- | ------ | --------- |
 | JWT refresh     | POST   | /token/refresh |
 
-#### User Resources
+#### [User Resources](#user-resources)
 The app has two types of users:
 - Regular users
 - Vendors
@@ -37,4 +37,4 @@ ve
 | [x]           | ve shop         | POST   | /vendor/shop | create a vendor's shop |
 
 #### Marketplace Resources
-These comprise of everything that doesn't fall under [User Resources](#User Resources)
+These comprise of everything that doesn't fall under [User Resources](#user-resources)
