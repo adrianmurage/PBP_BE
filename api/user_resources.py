@@ -10,7 +10,7 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource, reqparse
 
-from app.models import Users, Marketplace
+from api.models import Users, Marketplace
 
 user_instance = Users()
 user_parser = reqparse.RequestParser()

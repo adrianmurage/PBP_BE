@@ -7,7 +7,7 @@ from flask_jwt_extended import (
 )
 from flask_restful import Resource, reqparse
 
-from app.models import Marketplace
+from api.models import Marketplace
 
 item_instance = Marketplace("ITEMS")
 item_parser = reqparse.RequestParser()
