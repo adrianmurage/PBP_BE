@@ -43,17 +43,17 @@ class VendorTestCAse(unittest.TestCase):
             "password": "test_vendor"
         }
 
-    def test_regular_user_registration(self):
+    def test_vendor_registration(self):
         resp = self.client.post(
-            '/api/register',
+            '/api/vendor/register',
             content_type='application/json',
             data=json.dumps(self.vendor))
         print(resp.data)
         self.assertEqual(resp.status_code, 200)
 
-    def test_regular_user_login(self):
+    def test_vendor_login(self):
         resp = self.client.post(
-            '/api/login',
+            '/api/vendor/login',
             content_type='application/json',
             data=json.dumps({
                 "username": "vendor1",
