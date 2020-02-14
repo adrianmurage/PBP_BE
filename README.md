@@ -79,6 +79,13 @@ pip install -r requirements.txt
 ```
 python3 app.py 
 ```
+### Testing
+> assuming you installed the requirements
+
+Run the command below in the root directory of PBP_BE
+```
+pytest
+```
 
 ### Contribution
 
