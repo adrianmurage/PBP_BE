@@ -6,8 +6,7 @@ from flask_jwt_extended import JWTManager
 from flask_restful import Api
 
 import configs
-import marketplace_resources
-import user_resources
+from app import marketplace_resources, user_resources
 
 app = Flask(__name__)
 api = Api(app)
