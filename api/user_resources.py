@@ -51,7 +51,7 @@ class RegularUserRegistration(Resource):
         }
         try:
             user_instance.save(new_regular_user)
-            return {'msg': 'User {} was successfully created'.format(data['username'])}, 200
+            return {'msg': 'User {} was successfully created'.format(data['username'])}, 201
         except:
             return {'msg': 'Something went wrong'}, 500
 
@@ -90,7 +90,7 @@ class Profile(Resource):
             user_details = {
                 'username': user['username']
             }
-            return user_details
+            return user_details, 200
         except:
             return {'msg': 'Something went wrong'}, 500
 
@@ -112,7 +112,7 @@ class VendorRegistration(Resource):
         }
         try:
             user_instance.save(new_vendor)
-            return {'msg': 'Vendor {} was successfully created'.format(data['username'])}, 200
+            return {'msg': 'Vendor {} was successfully created'.format(data['username'])}, 201
         except:
             return {'msg': 'Something went wrong'}, 500
 
@@ -164,6 +164,6 @@ class Shop(Resource):
             print(new_shop)
             try:
                 shop_instance.save(new_shop)
-                return {'msg': 'Shop {} was successfully created'.format(data['shop_name'])}, 200
+                return {'msg': 'Shop {} was successfully created'.format(data['shop_name'])}, 201
             except:
                 return {'msg': 'Something went wrong'}, 500
