@@ -1,6 +1,6 @@
 [![time tracker](https://wakatime.com/badge/github/MainaMurage/PBP_BE.svg)](https://wakatime.com/badge/github/MainaMurage/PBP_BE)
 ## PBP BE(Backend)
-RESTful API for the [PBP webapp](https://github.com/MainaMurage/PBP-FE). 
+RESTful API for the [PBP webapp](https://pbp-angular-fe.herokuapp.com/). Source code is [here](https://github.com/MainaMurage/PBP-FE).
 
 Built using [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 
