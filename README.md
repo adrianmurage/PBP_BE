@@ -1,9 +1,15 @@
 [![time tracker](https://wakatime.com/badge/github/MainaMurage/PBP_BE.svg)](https://wakatime.com/badge/github/MainaMurage/PBP_BE)
 ## PBP BE(Backend)
-RESTful API for the [PBP webapp](https://github.com/MainaMurage/PBP-FE). 
+RESTful API for the [PBP webapp](https://pbp-angular-fe.herokuapp.com/). Source code is [here](https://github.com/MainaMurage/PBP-FE).
 
 Built using [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 
+## Documentation
+You can get the API documentation [here](https://documenter.getpostman.com/view/8522351/SzKPWMa4?version=latest)
+
+Or try it out Yourself!
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/bcba41bf870b12a99036)
 ### API Resources
 > all end points for the api start with **/api**
 
@@ -48,7 +54,7 @@ ie.
 | ------------- | --------------- | ------ | --------- | -------- |
 | No            | item            | GET    | /item     | get all items |
 | Yes           | item            | POST   | /item     | ve create a new item |
-| Yes           | orders          | GET    | /order    | return all orders made by a re |
+| Yes           | orders          | GET    | /order    | return all orders made by a ru |
 | Yes           | orders          | POST   | /order    | ru create a new order or add item to an existing order |
 | Yes           | order map       | GET    | /order/map | return coordinates(lat, lng) for all ve a ru has ordered from |
 

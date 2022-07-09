@@ -76,7 +76,7 @@ class Order(Resource):
             }
             try:
                 order_instance.save(new_order)
-                return {'msg': 'new order created'}, 200
+                return {'msg': 'new order created'}, 201
             except:
                 return {'msg': 'Something went wrong'}, 500
         if order:
@@ -88,7 +88,7 @@ class Order(Resource):
             }
             try:
                 order_instance.update_order(updated_order)
-                return {'msg': 'your order was updated'}, 201
+                return {'msg': 'your order was updated'}, 200
             except:
                 return {'msg': 'Something went wrong'}, 500
 
@@ -135,6 +135,6 @@ class Item(Resource):
         }
         try:
             item_instance.save(new_item)
-            return {'msg': 'item {} was successfully added'.format(data['item_name'])}, 201
+            return {'msg': 'item {} was successfully created'.format(data['item_name'])}, 201
         except:
             return {'msg': 'Something went wrong'}, 500

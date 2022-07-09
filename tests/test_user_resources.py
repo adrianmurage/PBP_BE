@@ -19,7 +19,7 @@ class RegularUserTestCase(unittest.TestCase):
             content_type='application/json',
             data=json.dumps(self.regular_user))
         print(resp.data)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 201)
 
     def test_regular_user_login(self):
         resp = self.client.post(
@@ -49,7 +49,7 @@ class VendorTestCAse(unittest.TestCase):
             content_type='application/json',
             data=json.dumps(self.vendor))
         print(resp.data)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.status_code, 201)
 
     def test_vendor_login(self):
         resp = self.client.post(
