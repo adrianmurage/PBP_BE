@@ -12,3 +12,5 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=10)
 # MongoDB
 MONGO_USER = os.environ.get('MONGO_USER')
 MONGO_PSWD = os.environ.get('MONGO_PSWD')
+
+
