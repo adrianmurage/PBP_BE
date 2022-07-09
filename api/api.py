@@ -31,3 +31,4 @@ api.add_resource(marketplace_resources.OrderMap, '/api/order/map')
 @jwt.user_identity_loader
 def user_identity_lookup(user):
     return user
+    
